@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor | Ariful</title>
+    <style>
+        /* CSS Reset & Variable */
+        :root {
+            --bg-color: #0b0c1a;
+            --accent: #7b2ff2;
+            --glow: #00c6ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f1021 0%, #1a044e 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Main Container: 90%vh and 95%vw */
+        .editor-container {
+            width: 95vw;
+            height: 80vh;
+            /* Adjusting for button space below */
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(123, 47, 242, 0.2);
+            position: relative;
+            padding: 10px;
+        }
+
+        #userCode {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #e0e0ff;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 16px;
+            resize: none;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* Label inside textarea */
+        .hint-text {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+
+        /* Save Button Area */
+        .action-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .save-btn {
+            background: linear-gradient(90deg, #531fa7, #7b2ff2);
+            color: #fff;
+            border: none;
+            padding: 14px 60px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(123, 47, 242, 0.4);
+            transition: 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--glow);
+            background: linear-gradient(90deg, #7b2ff2, #00c6ff);
+        }
+
+        .save-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .editor-container {
+                height: 70vh;
+            }
+
+            .save-btn {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="editor-container">
+        <span class="hint-text">HTML, CSS and JS একসাথে এখানে লিখুন</span>
+        <textarea id="userCode" placeholder="Enter your code here..." spellcheck="false"></textarea>
+    </div>
+
+    <div class="action-area">
+        <button class="save-btn" onclick="submitUserCode()">Save</button>
+    </div>
+
+    <script>
+        async function submitUserCode() {
+            const codeContent = document.getElementById('userCode').value;
+            const username = localStorage.getItem('username'); // LocalStorage থেকে ইউজারনেম নেয়া
+
+            const token = localStorage.getItem('token'); // LocalStorage থেকে ইউজারনেম নেয়া
+
+            if (!username || !token) {
+                alert("Username or token not found! Please login again.");
+                window.location = "../"
+                return;
+            }
+
+            // Prepare Data for the same API
+            const formData = new FormData();
+            formData.append("username", username);
+            formData.append("token", token);
+
+            formData.append("code_text", codeContent);
+
+            try {
+                const response = await fetch("https://www.ariful.pro.bd/api/web_create_by_template", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.message && result.message.toLowerCase().includes("unauthorized")) {
+                    localStorage.clear();
+                    window.location.href = "../";
+                }
+
+                if (response.ok && result.link) {
+                    // 🔥 নতুন লিংক সেভ করা localStorage-এ (পরবর্তী আপডেটের জন্য)
+                    localStorage.setItem('currentLink', result.link);
+                    alert("Successfully Saved! Your link: https://www.ariful.pro.bd/@" + result.link);
+                    window.open("https://www.ariful.pro.bd/@" + result.link, "_blank");
+                    location.href = `../edit/index.html?username=${username}&link=${result.link}`;
+
+                } else {
+                    alert("Error: " + (result.msg || "Save failed"));
+                }
+            } catch (err) {
+                console.error("Fetch Error:", err);
+                alert("Server এর সাথে কানেক্ট করা যাচ্ছে না। আপনার ব্যাকএন্ড কি চালু আছে?");
+            }
+        }
+
+        // Tab Key Support (Textarea তে ট্যাব দিলে যাতে স্পেস হয়)
+        document.getElementById('userCode').addEventListener('keydown', function (e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

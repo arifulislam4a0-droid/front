@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Websites</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2, #ff6a88);
+            background-size: 300% 300%;
+            animation: bgMove 10s ease infinite;
+            color: white;
+            padding: 20px;
+        }
+
+        @keyframes bgMove {
+            0% {
+                background-position: 0%
+            }
+
+            50% {
+                background-position: 100%
+            }
+
+            100% {
+                background-position: 0%
+            }
+        }
+
+        .wrapper {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .back {
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card {
+            background: white;
+            color: black;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .link-text {
+            max-width: 60%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .actions button {
+            border: none;
+            padding: 6px 10px;
+            margin-left: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .openSite {
+            background: #10b981;
+            color: white;
+        }
+
+        .edit {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .empty {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <div class="top">
+            <h3>Your Websites</h3>
+            <div class="back" onclick="location.href='../'">← Back</div>
+        </div>
+
+        <div class="container">
+            <div id="list"></div>
+            <div id="loader" class="loader">Loading...</div>
+        </div>
+
+    </div>
+
+    <script>
+
+        const API = "https://www.ariful.pro.bd/api/get_website_list";
+
+        async function loadData() {
+
+            const username = localStorage.getItem("username");
+            const token = localStorage.getItem('token'); // LocalStorage থেকে ইউজারনেম নেয়া
+
+            if (!username || !token) {
+                alert("Login required");
+                location.href = "../login";
+                return;
+            }
+
+            try {
+                const res = await fetch(API, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, token })
+                });
+
+                const data = await res.json();
+                if (data.message && data.message.toLowerCase().includes("unauthorized")) {
+                    localStorage.clear();
+                    window.location.href = "../";
+                }
+                loader.style.display = "none";
+
+                if (!data.success) {
+                    list.innerHTML = "<p class='empty'>Error</p>";
+                    return;
+                }
+
+                if (data.links.length === 0) {
+                    list.innerHTML = "<p class='empty'>No websites</p>";
+                    return;
+                }
+
+                list.innerHTML = data.links.map(link => `
+            <div class="card">
+                <div class="link-text">${link}</div>
+
+                <div class="actions">
+                    <button class="openSite" onclick="openSite('${link}')">Website</button>
+                    <button class="edit" onclick="editSite('${link}')">Open</button>
+                </div>
+            </div>
+        `).join("");
+
+            } catch (err) {
+                loader.style.display = "none";
+                list.innerHTML = "<p class='empty'>Server error</p>";
+            }
+        }
+
+        function openSite(link) {
+            const username = localStorage.getItem("username");
+
+            // 👉 live site open
+            window.open(`https://www.ariful.pro.bd/@${link}`, "_blank");
+        }
+
+        function editSite(link) {
+            const username = localStorage.getItem("username");
+
+            // 👉 edit page
+            location.href = `../edit/index.html?username=${username}&link=${encodeURIComponent(link)}`;
+        }
+
+        // function editSite(link) {
+        //         const username = localStorage.getItem("username");
+
+        //         location.href = `${window.location.origin}/clint/edit/index.html?username=${username}&link=${encodeURIComponent(link)}`;
+        //     }
+
+        loadData();
+
+    </script>
+
+</body>
+
+</html>

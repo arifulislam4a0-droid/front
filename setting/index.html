@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Settings</title>
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338ca;
+            --danger-color: #EF4444;
+            --danger-hover: #DC2626;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --success-color: #10B981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 550px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            background: #FAFAFA;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #F9FAFB;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--success-color);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(22px);
+        }
+
+        input:disabled+.slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Input Group */
+        .current-link {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+
+        .input-group {
+            display: flex;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #F9FAFB;
+        }
+
+        .input-prefix {
+            padding: 10px 15px;
+            background: #E5E7EB;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #E5E7EB;
+            color: var(--text-main);
+            text-decoration: none;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 15px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        .toast-success {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .toast-error {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .loader {
+            display: none;
+            border: 2px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 2px solid white;
+            width: 14px;
+            height: 14px;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="settings-card">
+        <div class="card-header">
+            <h2>Website Settings</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="section">
+                <div class="status-container">
+                    <div>
+                        <div class="section-title" style="margin-bottom: 4px;">Website Status</div>
+                        <small id="statusText">Checking...</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="statusToggle" disabled onchange="toggleStatus()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Change Link</div>
+                <div class="current-link" id="currentLinkText">Loading link...</div>
+                <div class="input-group">
+                    <span class="input-prefix">https://www.ariful.pro.bd/view/</span>
+                    <input type="text" id="newLinkInput">
+                </div>
+                <button class="btn btn-primary" id="btnUpdateLink" onclick="updateLink()">
+                    <div class="loader" id="loaderLink"></div> Update Link
+                </button>
+            </div>
+
+            <div class="section">
+                <div class="section-title" style="color: var(--danger-color);">Danger Zone</div>
+                <p class="current-link">Delete your website permanently.</p>
+                <button class="btn btn-danger" id="btnDelete" onclick="deleteWebsite()">
+                    <div class="loader" id="loaderDelete"></div> Delete Website
+                </button>
+            </div>
+
+            <a href="../" class="btn btn-secondary">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        const API_BASE = "https://www.ariful.pro.bd/api";
+        const VIEW_BASE = "https://www.ariful.pro.bd/@";
+
+        // Session Storage থেকে ডেটা নেয়া
+        const username = sessionStorage.getItem("username");
+        const token = localStorage.getItem('token'); // LocalStorage থেকে ইউজারনেম নেয়া
+
+        let currentLink = sessionStorage.getItem("link");
+
+        const statusToggle = document.getElementById('statusToggle');
+        const statusText = document.getElementById('statusText');
+        const currentLinkText = document.getElementById('currentLinkText');
+        const newLinkInput = document.getElementById('newLinkInput');
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            if (!username || !token) {
+                alert("Username or token not found! Please login again.");
+                window.location = "../"
+                return;
+            }
+            if (!username || !currentLink) {
+                showToast("User session not found!", "error");
+                return;
+            }
+            renderUI();
+            fetchStatus();
+        });
+
+        function renderUI() {
+            currentLinkText.innerHTML = `Current: <strong>${VIEW_BASE}${currentLink}</strong>`;
+            newLinkInput.value = currentLink;
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById("toast");
+            t.textContent = msg;
+            t.className = `show toast-${type}`;
+            setTimeout(() => t.className = "", 3000);
+        }
+
+        // ================= 1. STATUS (POST with Body) =================
+        async function fetchStatus() {
+            try {
+
+                const res = await fetch(`${API_BASE}/enable_disable`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, token, link: currentLink })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    statusToggle.checked = data.running === 1;
+                    statusText.innerHTML = data.running === 1 ? "Active" : "Disabled";
+                    statusToggle.disabled = false;
+                }
+            } catch (e) {
+                statusText.innerText = "Error";
+            }
+        }
+
+        async function toggleStatus() {
+            const newState = statusToggle.checked ? 1 : 0;
+            statusToggle.disabled = true;
+            try {
+                const res = await fetch(`${API_BASE}/enable_disable`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, token, link: currentLink, running: newState })
+                });
+                const data = await res.json();
+                statusToggle.checked = data.running === 1;
+                statusText.innerHTML = data.running === 1 ? "Active" : "Disabled";
+                showToast(data.running === 1 ? "Enabled" : "Disabled", "success");
+            } catch (e) {
+                showToast("Failed to update", "error");
+            } finally {
+                statusToggle.disabled = false;
+            }
+        }
+
+        // ================= 2. UPDATE LINK =================
+        async function updateLink() {
+            const newLink = newLinkInput.value.trim();
+            if (!newLink || newLink === currentLink) return;
+
+            if (!confirm("Change URL to " + newLink + "?")) return;
+
+            document.getElementById('btnUpdateLink').disabled = true;
+            document.getElementById('loaderLink').style.display = 'inline-block';
+
+            try {
+                const res = await fetch(`${API_BASE}/changeLink`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, token, link: currentLink, newlink: newLink })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast("Link Updated!", "success");
+                    sessionStorage.removeItem("link");
+                    setTimeout(() => {
+                        window.history.go(-2);
+                    }, 1500);
+                } else {
+                    showToast(data.msg, "error");
+                }
+            } catch (e) {
+                showToast("Server Error", "error");
+            } finally {
+                document.getElementById('btnUpdateLink').disabled = false;
+                document.getElementById('loaderLink').style.display = 'none';
+            }
+        }
+
+        // ================= 3. DELETE =================
+        async function deleteWebsite() {
+            if (!confirm("Are you sure? This cannot be undone!")) return;
+
+            document.getElementById('btnDelete').disabled = true;
+            document.getElementById('loaderDelete').style.display = 'inline-block';
+
+            try {
+                const res = await fetch(`${API_BASE}/deleteWebsite`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, token, link: currentLink })
+                });
+                if (res.ok) {
+                    showToast("Deleted!", "success");
+                    sessionStorage.removeItem("link");
+                    setTimeout(() => window.location.href = "../all_website_list", 1500);
+                }
+            } catch (e) {
+                showToast("Error", "error");
+            } finally {
+                document.getElementById('btnDelete').disabled = false;
+                document.getElementById('loaderDelete').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

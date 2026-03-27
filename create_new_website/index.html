@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zerocode Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+
+            /* multicolor gradient */
+
+            background: linear-gradient(135deg,
+                    #667eea,
+                    #764ba2,
+                    #ff6a88,
+                    #ffb199);
+
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite;
+
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+
+            width: 100%;
+            max-width: 650px;
+            display: grid;
+            gap: 28px;
+
+        }
+
+        /* card */
+
+        .card {
+
+            position: relative;
+            padding: 42px 30px;
+            text-align: center;
+            border-radius: 20px;
+
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.12);
+
+            cursor: pointer;
+            transition: all .3s ease;
+
+        }
+
+        /* gradient border effect */
+
+        .card::before {
+
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: 20px;
+
+            background: linear-gradient(45deg,
+                    #ff6a88,
+                    #667eea,
+                    #00dbde);
+
+            -webkit-mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+
+        }
+
+        /* hover */
+
+        .card:hover {
+
+            transform: translateY(-8px) scale(1.02);
+
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.2);
+
+        }
+
+        /* text */
+
+        .card h2 {
+
+            font-size: 22px;
+            font-weight: 600;
+            color: #222;
+            letter-spacing: .3px;
+
+        }
+
+        /* responsive */
+
+        @media (max-width:600px) {
+
+            .card {
+                padding: 32px 22px;
+            }
+
+            .card h2 {
+                font-size: 18px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="card" onclick="location.href='../premade'">
+            <h2>Premade Template</h2>
+        </div>
+
+        <div class="card" onclick="location.href='../dropdown'">
+            <h2>Dropdown and Make</h2>
+        </div>
+
+        <div class="card" onclick="location.href='../custom_code'">
+            <h2>Custom Coding</h2>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

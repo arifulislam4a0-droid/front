@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #667eea, #764ba2, #6ee7b7);
+        }
+
+        /* card */
+
+        .card {
+            background: white;
+            padding: 35px;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 10px;
+            color: #6366f1;
+            cursor: pointer;
+        }
+
+        /* toast */
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #6366f1;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* loader */
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ddd;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="card">
+
+        <h2>Login</h2>
+
+        <input id="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p class="link" onclick="go('../email')">
+            Forgot password?
+        </p>
+
+        <p class="link" onclick="go('../signup')">
+            Create account
+        </p>
+
+    </div>
+
+    <script>
+
+        const API = "https://www.ariful.pro.bd/api";
+
+        /* loader hide after load */
+
+        window.onload = () => {
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 300);
+        };
+
+        function go(page) {
+            loader.style.display = "flex";
+            setTimeout(() => {
+                location.href = page;
+            }, 200);
+        }
+
+        function toast(msg) {
+            toastBox = document.getElementById("toast");
+            toastBox.innerText = msg;
+            toastBox.style.display = "block";
+            setTimeout(() => toastBox.style.display = "none", 3000);
+        }
+
+        async function login() {
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            loader.style.display = "flex";
+
+            const res = await fetch(API + "/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+            loader.style.display = "none";
+
+            toast(data.msg);
+
+            if (data.verify_issue) {
+                localStorage.setItem("email", email);
+                go("../email");
+            }
+
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("username", data.username);
+
+                go("../");
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariful</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(120deg, #0f1021 0%, #1a044e 60%, #7b2ff2 100%);
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(20, 10, 40, 0.7);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 24px #7b2ff2;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #navbar nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 2vw;
+        }
+
+        #navbar button {
+            background: linear-gradient(90deg, #531fa7, #671a9b, #19034e);
+            color: #fff;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 22px;
+            border-radius: 30px;
+            margin: 0 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 12px #7b2ff2;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        #navbar button:hover {
+            background: linear-gradient(90deg, #554788, #0045db, #03ffdd);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        #navbar button a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        #basic_into {
+            margin-top: 5vh;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            background: rgba(40, 10, 80, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 4px 32px #7b2ff2;
+            padding: 40px 30px;
+            width: 80vw;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: wrap;
+        }
+
+        #photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-image: url("arif_pic.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 4px 32px #231557;
+            border: 4px solid #7b2ff2;
+        }
+
+        #basic_text_filed {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        #basic_text_filed h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #7b2ff2, #f357a8, #00c6ff, #fff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            text-shadow: 0 2px 12px #7b2ff2;
+        }
+
+        .section {
+            background: rgba(30, 10, 60, 0.7);
+            margin: 40px auto;
+            border-radius: 20px;
+            box-shadow: 0 2px 24px #7b2ff2;
+            padding: 36px 32px;
+            width: 80vw;
+            max-width: 900px;
+            transition: box-shadow 0.3s;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 40px #00c6ff, 0 0 32px #7b2ff2;
+            border: 1.5px solid #00c6ff;
+            transition: box-shadow 0.3s, border 0.3s;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, #7b2ff2, #f357a8, #00c6ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: #e0e0ff;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+
+            #basic_into,
+            .section {
+                width: 95vw;
+                padding: 24px 10px;
+            }
+
+            #basic_into {
+                flex-direction: column;
+                gap: 20px;
+                margin-top: 5vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #navbar {
+                height: auto;
+                padding: 8px 0;
+            }
+
+            #navbar nav {
+                flex-wrap: wrap;
+                gap: 1vw;
+            }
+
+            #navbar button {
+                font-size: 0.95rem;
+                padding: 8px 12px;
+                margin: 2px 2px;
+            }
+
+            #basic_into {
+                padding: 18px 4px;
+                margin-top: 5vh;
+            }
+
+            #photo {
+                width: 110px;
+                height: 110px;
+            }
+
+            .section {
+                padding: 16px 4px;
+            }
+
+            .section h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="navbar">
+        <nav>
+            <button onclick="saveWebsite()">Save</button>
+        </nav>
+
+    </header>
+
+    <p id="asdfg"></p>
+
+    <div id="basic_into">
+        <div id="photo"></div>
+        <div id="basic_text_filed">
+            <h2 contenteditable="true">
+                <span class="typewriterr" data-lines="Hey, welcome here! | ">
+                </span> <span class="typewriter"></span>
+                <span class="typewriter" data-words="Make your website "></span>
+            </h2>
+        </div>
+    </div>
+
+    <div id="About_Me" class="section reveal">
+        <h2><span class="section-typewriter" data-text="Create Your Website"></span></h2>
+        <ul>
+            <li>add new Sections,Lines and sublines</li>
+
+        </ul>
+    </div>
+
+
+
+    <footer style="text-align:center; margin: 30px 0 10px 0; color: #aaa;">
+        &copy; 2025 Md Ariful Islam | All rights reserved.
+    </footer>
+
+    <script>
+        const staticSpan = document.querySelector('.typewriterr');
+        let lines = staticSpan.getAttribute("data-lines")
+            ? staticSpan.getAttribute("data-lines").split("|")
+            : []; let lineIndex = 0;
+        let charIndex = 0;
+        let do_it = false;
+
+        function typeOnce() {
+            if (lineIndex < lines.length) {
+                const currentLine = lines[lineIndex];
+                if (charIndex < currentLine.length) {
+                    staticSpan.innerHTML += currentLine.charAt(charIndex++);
+                    setTimeout(typeOnce, 100);
+                } else {
+                    if (lineIndex < lines.length - 1) staticSpan.innerHTML += "<br>";
+                    charIndex = 0;
+                    lineIndex++;
+                    setTimeout(typeOnce, 500);
+                }
+            } else {
+                do_it = true;
+                if (typeof typeSpan !== 'undefined' && do_it === true) type();
+            }
+        }
+        if (staticSpan) typeOnce();
+
+        const typeSpan = document.querySelector('.typewriter');
+        let words = typeSpan.getAttribute('data-words')
+            ? typeSpan.getAttribute('data-words').split(',')
+            : ["Make your website easily", "Add new divs,lines and sublines", "Design Your website"];
+
+
+        let i = 0, j = 0, currentWord = '', isDeleting = false;
+        // const typeSpan = document.querySelector('.typewriter');
+
+        function type() {
+            currentWord = words[i];
+            if (isDeleting) {
+                typeSpan.textContent = currentWord.substring(0, j--);
+                if (j < 0) {
+                    isDeleting = false;
+                    i = (i + 1) % words.length;
+                    setTimeout(type, 500);
+                } else setTimeout(type, 70);
+            } else {
+                typeSpan.textContent = currentWord.substring(0, j++);
+                if (j > currentWord.length) {
+                    isDeleting = true;
+                    setTimeout(type, 1000);
+                } else setTimeout(type, 120);
+            }
+        }
+        if (typeSpan && do_it == true) type();
+
+        function typeSectionHeading(el, text) {
+            let idx = 0;
+            function typing() {
+                if (idx <= text.length) {
+                    el.textContent = text.substring(0, idx);
+                    idx++;
+                    setTimeout(typing, 120);
+                }
+            }
+            typing();
+        }
+
+        function revealSections() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let el of reveals) {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 60) {
+                    el.classList.add('active');
+                    const typeEl = el.querySelector('.section-typewriter');
+                    if (typeEl && !typeEl.dataset.typed) {
+                        typeEl.dataset.typed = "true";
+                        typeSectionHeading(typeEl, typeEl.dataset.text);
+                    }
+                }
+            }
+        }
+        window.addEventListener('scroll', revealSections);
+        window.addEventListener('load', revealSections);
+
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function () {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) navbar.style.top = '-600px';
+            else navbar.style.top = '0';
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
+
+    <script id="builder-logic">
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".section li, .section h2").forEach(el => {
+                el.contentEditable = true;
+            });
+
+            const photo = document.getElementById("photo");
+            if (photo) {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = "image/*";
+                input.style.display = "block";
+                input.style.margin = "10px auto";
+                photo.after(input);
+                input.onchange = function () {
+                    const reader = new FileReader();
+                    reader.onload = e => photo.style.backgroundImage = `url(${e.target.result})`;
+                    reader.readAsDataURL(this.files[0]);
+                    // 🔥 Store file for upload
+                    window.selectedImageFile = this.files[0];
+                };
+            }
+
+            document.querySelectorAll(".section").forEach(section => {
+                const control = document.createElement("div");
+                control.style.marginBottom = "10px";
+                control.innerHTML = `
+                    <button onclick="addSectionAbove(this.parentElement.parentElement)">add section above</button>
+                    <button onclick="deleteElement(this.parentElement.parentElement)">delete section</button>
+                    <button onclick="addLine(this.parentElement.parentElement)">add line</button>
+                `;
+                section.prepend(control);
+
+                section.querySelectorAll("li").forEach(li => {
+                    const btns = document.createElement("span");
+                    btns.innerHTML = `
+                        <button onclick="this.parentElement.parentElement.remove()">delete</button>
+                        <button onclick="addSubline(this.parentElement.parentElement)">subline</button>
+                    `;
+                    li.appendChild(btns);
+                });
+            });
+        });
+
+        function addLine(section) {
+            const ul = section.querySelector("ul");
+            const li = document.createElement("li");
+            li.contentEditable = true;
+            li.innerHTML = `New line <span><button onclick="this.parentElement.parentElement.remove()">delete</button><button onclick="addSubline(this.parentElement.parentElement)">subline</button></span>`;
+            ul.appendChild(li);
+        }
+
+        function addSubline(li) {
+            let sub = li.querySelector("ul") || document.createElement("ul");
+            if (!li.querySelector("ul")) li.appendChild(sub);
+            const newLine = document.createElement("li");
+            newLine.contentEditable = true;
+            newLine.innerHTML = `New subline <span><button onclick="this.parentElement.parentElement.remove()">delete</button></span>`;
+            sub.appendChild(newLine);
+        }
+
+        function deleteElement(el) { el.remove(); }
+        function addSectionAbove(section) {
+            const newSec = section.cloneNode(true);
+            section.before(newSec);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const span = document.querySelector(".typewriter");
+            if (span) {
+                span.addEventListener("dblclick", () => {
+                    // Bortoman shobdo gulo data-words theke neya hoche
+                    const currentWordsStr = span.getAttribute('data-words') || words.join(",");
+                    const newWords = prompt("Edit words (comma separated):", currentWordsStr);
+
+                    if (newWords) {
+                        // ১. HTML attribute update kora (jate save korle eta thake)
+                        span.setAttribute('data-words', newWords);
+
+                        // ২. JavaScript variable update kora (jate sathe sathe cholte thake)
+                        words = newWords.split(",");
+
+                        // ৩. Animation reset kora
+                        i = 0;
+                        j = 0;
+                        isDeleting = false;
+
+                        alert("Updated! Now click Save.");
+                    }
+                });
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const span = document.querySelector(".typewriterr");
+
+            if (span) {
+
+                span.addEventListener("dblclick", () => {
+
+                    const current = span.getAttribute("data-lines");
+
+                    const newText = prompt(
+                        "Edit intro (use | between lines)",
+                        current
+                    );
+
+                    if (newText) {
+
+                        span.setAttribute("data-lines", newText);
+
+                        lines = newText.split("|");
+
+                        // reset animation
+                        lineIndex = 0;
+                        charIndex = 0;
+                        span.innerHTML = "";
+
+                        typeOnce();
+                    }
+                });
+
+            }
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+    <script id="save-logic">
+        async function saveWebsite() {
+            const clone = document.documentElement.cloneNode(true);
+
+            // ১. টাইপরাইটার এবং অপ্রয়োজনীয় UI ক্লিন করা
+            const sSpan = clone.querySelector('.typewriterr');
+            const tSpan = clone.querySelector('.typewriter');
+            if (sSpan) sSpan.innerHTML = "";
+            if (tSpan) tSpan.textContent = "";
+
+            // ২. বিল্ডার লজিক এবং সেভ লজিক স্ক্রিপ্ট মুছে ফেলা (নিরাপত্তার জন্য)
+            const builderScript = clone.querySelector('#builder-logic');
+            if (builderScript) builderScript.remove();
+            const saveScript = clone.querySelector('#save-logic');
+            if (saveScript) saveScript.remove();
+
+            // ৩. নেভিবার এবং বাটন মুছে ফেলা
+            const nav = clone.querySelector("#navbar");
+            if (nav) nav.remove();
+            clone.querySelectorAll("button, input, .builder-ui").forEach(el => el.remove());
+
+            // ৪. এডিট মোড ডিজেবল করা
+            clone.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                el.removeAttribute("contenteditable");
+                el.style.outline = "none";
+            });
+
+            const finalCode = "<!DOCTYPE html>\n" + clone.outerHTML;
+
+            // ৫. Backend-এ ডাটা পাঠানো
+            const username = localStorage.getItem('username'); // LocalStorage থেকে ইউজারনেম নেয়া
+
+            const token = localStorage.getItem('token'); // LocalStorage থেকে ইউজারনেম নেয়া
+
+            if (!username || !token) {
+                alert("Username or token not found! Please login again.");
+                window.location = "../"
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("username", username);
+            formData.append("token", token);
+
+            formData.append("code_text", finalCode);
+
+
+
+            // 🔥 Image file if selected
+            if (window.selectedImageFile) {
+                formData.append("image", window.selectedImageFile);
+            }
+
+            try {
+                const response = await fetch("https://www.ariful.pro.bd/api/web_create_by_template", {
+                    method: "POST",
+                    body: formData // Form data hisebe jachche karon backend-e multer use kora hoyeche
+                });
+
+                const result = await response.json();
+
+                if (result.message && result.message.toLowerCase().includes("unauthorized")) {
+                    localStorage.clear();
+                    window.location.href = "../";
+                }
+
+                if (response.ok && result.link) {
+                    // 🔥 নতুন লিংক সেভ করা localStorage-এ (পরবর্তী আপডেটের জন্য)
+                    localStorage.setItem('currentLink', result.link);
+                    alert("Successfully Saved! Your link: https://www.ariful.pro.bd/@" + result.link);
+                    window.open("https://www.ariful.pro.bd/@" + result.link, "_blank");
+                    location.href = `../edit/index.html?username=${username}&link=${result.link}`;
+
+                } else {
+                    alert("Error: " + (result.msg || "Save failed"));
+                }
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("Could not connect to the server.");
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+    <script>//asdfg1</script>
+    <script>//asdfg2</script>
+
+</body>
+
+</html>

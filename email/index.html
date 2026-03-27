@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Email</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #89f7fe, #66a6ff, #c3cfe2);
+            font-family: system-ui;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            width: 350px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            border: none;
+            color: white;
+            border-radius: 6px;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ddd;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="card">
+
+        <h2>Enter Email</h2>
+
+        <input id="email" placeholder="Email">
+
+        <button onclick="sendOtp()">Send OTP</button>
+
+    </div>
+
+    <script>
+
+        const API = "https://www.ariful.pro.bd/api";
+
+        window.onload = () => {
+            setTimeout(() => loader.style.display = "none", 300);
+        };
+
+        async function sendOtp() {
+
+            loader.style.display = "flex";
+
+            const email = document.getElementById("email").value;
+
+            localStorage.setItem("email", email);
+
+            const res = await fetch(API + "/send_otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await res.json();
+
+            alert(data.msg);
+
+            loader.style.display = "none";
+
+            if (data.msg.includes("OTP")) {
+                location.href = "otp";
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
